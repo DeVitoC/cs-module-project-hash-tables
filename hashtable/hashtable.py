@@ -60,7 +60,15 @@ class HashTable:
         """
 
         # Your code here
-        hash = 0
+        hash = 0xcbf29ce484222325
+        prime = 0x100000001b3
+        if not isinstance(key, bytes):
+            key = key.encode("UTF-8", "ignore")
+        for byte in key:
+            hash ^= byte
+            hash %= self.capacity
+            hash *= prime
+        return hash
 
 
     def djb2(self, key):
@@ -77,8 +85,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        # return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
@@ -89,7 +97,9 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        i = self.hash_index(key)
 
+        self.buckets[i] = value
 
     def delete(self, key):
         """
@@ -100,6 +110,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        i = self.hash_index(key)
+        self.buckets[i] = None
 
 
     def get(self, key):
@@ -111,6 +123,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        i = self.hash_index(key)
+        return self.buckets[i]
 
 
     def resize(self, new_capacity):
