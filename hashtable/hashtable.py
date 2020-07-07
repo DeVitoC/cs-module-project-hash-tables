@@ -1,3 +1,4 @@
+
 class HashTableEntry:
     """
     Linked List hash table key/value pair
@@ -22,6 +23,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = capacity
+        self.pairs = 0
+        self.buckets = [None for i in range(capacity)]
 
 
     def get_num_slots(self):
@@ -35,6 +39,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
@@ -44,6 +49,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.pairs/self.capacity
 
 
     def fnv1(self, key):
@@ -54,6 +60,7 @@ class HashTable:
         """
 
         # Your code here
+        hash = 0
 
 
     def djb2(self, key):
