@@ -4,9 +4,50 @@ class HashTableEntry:
     Linked List hash table key/value pair
     """
     def __init__(self, key, value):
-        self.key = key
-        self.value = value
-        self.next = None
+        # self.key = key
+        # self.value = value
+        self.head = self.Node((key, value))
+
+    class Node:
+        def __init__(self, value):
+            self.value = value
+            self.next = None
+
+    def find(self, key):
+        node = self.head
+        while node is not None:
+            if node.value[0] == key:
+                return node.value[1]
+            node = node.next
+        return None
+
+    def insert_at_head(self, key, value):
+        new_node = self.Node((key, value))
+        new_node.next = self.head
+        self.head = new_node
+
+    def append(self, key, value):
+        cur_node = self.head
+        while cur_node.next is not None:
+            cur_node = cur_node.next
+        new_node = self.Node((key, value))
+        cur_node.next = new_node
+
+    def delete(self, key):
+        if self.head.value[0] == key:
+            del_node = self.head
+            self.head = self.head.next
+            return del_node
+
+        node = self.head
+        while node.next is not None:
+            if node.next.value[0] == key:
+                del_node = node.next
+                del_node.next = None
+                node.next = node.next.next
+                return del_node
+            node = node.next
+
 
 
 # Hash table can't have fewer than this many slots
@@ -26,8 +67,6 @@ class HashTable:
         self.capacity = capacity
         self.pairs = 0
         self.buckets = [None for i in range(capacity)]
-        self.head = None
-
 
     def get_num_slots(self):
         """
@@ -100,8 +139,12 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-
-        self.buckets[i] = value
+        # self.buckets[i] = value
+        if self.buckets[i] is None:
+            self.buckets[i] = HashTableEntry(key, value)
+        else:
+            self.buckets[i].insert_at_head(key, value)
+        self.pairs += 1
 
     def delete(self, key):
         """
@@ -113,7 +156,15 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-        self.buckets[i] = None
+        if isinstance(self.buckets[i], HashTableEntry):
+            node = self.buckets[i].delete(key)
+            if node == None:
+                print(f"{key} node found.")
+            else:
+                self.pairs -= 1
+            if self.buckets[i].head == None:
+                self.buckets[i] = None
+
 
 
     def get(self, key):
@@ -126,7 +177,10 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-        return self.buckets[i]
+        if isinstance(self.buckets[i], HashTableEntry):
+            return self.buckets[i].find(key)
+        else:
+            return None
 
 
     def resize(self, new_capacity):
