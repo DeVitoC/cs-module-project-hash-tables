@@ -26,6 +26,7 @@ class HashTable:
         self.capacity = capacity
         self.pairs = 0
         self.buckets = [None for i in range(capacity)]
+        self.head = None
 
 
     def get_num_slots(self):
@@ -66,7 +67,6 @@ class HashTable:
             key = key.encode("UTF-8", "ignore")
         for byte in key:
             hash ^= byte
-            hash %= self.capacity
             hash *= prime
         return hash
 
@@ -78,6 +78,8 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
+        pass
+
 
 
     def hash_index(self, key):
