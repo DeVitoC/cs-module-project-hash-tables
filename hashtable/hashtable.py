@@ -153,7 +153,6 @@ class HashTable:
             self.buckets[i].insert_at_head(key, value)
         self.pairs += 1
 
-
     def delete(self, key):
         """
         Remove the value stored with the given key.
