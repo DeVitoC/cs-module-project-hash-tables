@@ -48,7 +48,13 @@ class HashTableEntry:
                 return del_node
             node = node.next
 
-
+    def get_as_array(self):
+        array = []
+        node = self.head
+        while node is not None:
+            array.append((node.value[0], node.value[1]))
+            node = node.next
+        return array
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
@@ -138,13 +144,16 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        if self.get_load_factor() >= 0.7:
+            print(f"{self.get_load_factor()}")
+            self.resize(self.capacity*2)
         i = self.hash_index(key)
-        # self.buckets[i] = value
         if self.buckets[i] is None:
             self.buckets[i] = HashTableEntry(key, value)
         else:
             self.buckets[i].insert_at_head(key, value)
         self.pairs += 1
+
 
     def delete(self, key):
         """
@@ -164,6 +173,8 @@ class HashTable:
                 self.pairs -= 1
             if self.buckets[i].head == None:
                 self.buckets[i] = None
+        if self.get_load_factor() <= 0.2:
+            self.resize(self.capacity//2)
 
 
 
@@ -191,6 +202,18 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        old_values = []
+
+        for i in self.buckets:
+            if not isinstance(i, HashTableEntry):
+                continue
+            else:
+                new_values = i.get_as_array()
+                old_values.extend(new_values)
+        self.capacity = new_capacity
+        self.buckets = [None for i in range(self.capacity)]
+        for i in old_values:
+            self.put(i[0], i[1])
 
 
 
