@@ -145,7 +145,6 @@ class HashTable:
         """
         # Your code here
         if self.get_load_factor() >= 0.7:
-            print(f"{self.get_load_factor()}")
             self.resize(self.capacity*2)
         i = self.hash_index(key)
         if self.buckets[i] is None:
