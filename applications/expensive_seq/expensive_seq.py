@@ -11,7 +11,9 @@ def expensive_seq(x, y, z):
         first = expensive_seq(x-1, y+1, z)
         second = expensive_seq(x-2, y+2, z*2)
         third = expensive_seq(x-3, y+3, z*3)
-        return first + second + third
+        result = first + second + third
+        cache[(x, y, z)] = result
+        return result
 
 
 if __name__ == "__main__":

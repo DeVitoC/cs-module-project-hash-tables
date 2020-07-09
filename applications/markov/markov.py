@@ -23,7 +23,7 @@ stop_words = []
 for key in keys:
     if key[0].isupper() or (key[0] in ['"', '('] and key[1].isupper()):
         start_words.append(key)
-    elif key[-1] in ['.', '?', '!']:
+    if key[-1] in ['.', '?', '!', '."', '.)']:
         stop_words.append(key)
     elif key[-1] in ['"', ')'] and key[-2] in ['.', '?', '!']:
         stop_words.append(key)
